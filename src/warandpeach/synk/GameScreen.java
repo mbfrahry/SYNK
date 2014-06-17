@@ -3,6 +3,8 @@ package warandpeach.synk;
 import java.util.List;
 
 import android.graphics.Color;
+import android.graphics.Point;
+import android.util.Log;
 
 import com.badlogic.androidgames.framework.Game;
 import com.badlogic.androidgames.framework.Graphics;
@@ -18,7 +20,7 @@ public class GameScreen extends Screen {
 		GameOver
 	}
 	
-	GameState state = GameState.Ready;
+	GameState state = GameState.Running;
 	World world;
 	
 	public GameScreen(Game game){
@@ -53,8 +55,28 @@ public class GameScreen extends Screen {
 					state = GameState.Paused;
 					return; 
 				}
+				if(event.y > 1100 ){
+					if(event.x < 180){
+						world.player.moveLeft = false;
+					}
+					
+					if(event.x > 620){
+						world.player.moveRight = false;
+					}
+				}
+				
 			}
-			
+			if(event.type == TouchEvent.TOUCH_DOWN){
+				if(event.y > 1100 ){
+					if(event.x < 180){
+						world.player.moveLeft = true;
+					}
+					
+					if(event.x > 620){
+						world.player.moveRight = true;
+					}
+				}
+			}
 		}
 		world.update(deltaTime);
 		if(world.gameOver){
@@ -75,6 +97,7 @@ public class GameScreen extends Screen {
 					return;
 				}
 			}
+			
 		}
 	}
 	
@@ -113,11 +136,43 @@ public class GameScreen extends Screen {
 		Graphics g = game.getGraphics();
 		Player player = world.player;
 		
+		int radiusLeft = calcRadius(player.x, -400);
+		int radiusRight = calcRadius(-player.x, 400);
+		
+		g.drawArc(0, 1275, radiusLeft, 270, 90, Color.WHITE);
+		g.drawArc(795, 1275, radiusRight, 180, 90, Color.WHITE);
+		
+		PointManager pointManager = world.pointManager;
+		for(int i = 0; i < pointManager.points.size(); i++){
+			Point currPoint = pointManager.points.get(i);
+			if(currPoint.y > player.y-25 && currPoint.y < player.y+Assets.player.getHeight()-25){
+				if(player.health > 700)
+					g.drawPixel(currPoint.x, currPoint.y, Color.GREEN);
+				else if(player.health > 300)
+					g.drawPixel(currPoint.x, currPoint.y, Color.YELLOW);
+				else if(player.health > 0)
+					g.drawPixel(currPoint.x, currPoint.y, Color.RED);
+			}
+			else
+				g.drawPixel(currPoint.x, currPoint.y, Color.CYAN);
+		}
+		
 		Pixmap playerPixmap = Assets.player;
 		int x = player.x;
 		int y = player.y;
 		g.drawPixmap(playerPixmap, x, y);
 		
+		g.drawText("Level: " + (pointManager.speedIndex+1), 325, 1200, Color.WHITE);
+		g.drawText("Health: " + player.health, 325, 1250, Color.WHITE);
+		g.drawText("Score: " + pointManager.totalPixels, 325, 50, Color.WHITE);
+		
+	}
+	
+	private int calcRadius(int x, int fourHundred){
+		double radius = (1.0/5)*(x + fourHundred) + 180.5;
+		int newRadius = (int)Math.floor(radius);
+			
+		return newRadius;
 	}
 	
 	private void drawReadyUI(){
@@ -129,8 +184,7 @@ public class GameScreen extends Screen {
 	private void drawRunningUI(){
 		Graphics g = game.getGraphics();
 		
-		g.drawRect(0, 1100, 150, 150, Color.WHITE);
-		g.drawRect(650, 1100, 150, 150, Color.WHITE);
+		
 	}
 	
 	private void drawPausedUI(){

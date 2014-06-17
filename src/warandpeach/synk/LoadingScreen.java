@@ -17,7 +17,6 @@ public class LoadingScreen extends Screen{
 		Assets.mainMenu = g.newPixmap("SYNKMainMenu.png", PixmapFormat.ARGB4444);
 		Assets.background = g.newPixmap("SYNKBackground.png", PixmapFormat.ARGB4444);
 		
-		
 		Assets.player = g.newPixmap("Player.png", PixmapFormat.ARGB4444);
 		
 		Settings.load(game.getFileIO());

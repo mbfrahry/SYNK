@@ -12,6 +12,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
+import android.graphics.RectF;
 
 import com.badlogic.androidgames.framework.Graphics;
 import com.badlogic.androidgames.framework.Pixmap;
@@ -29,6 +30,7 @@ public class AndroidGraphics implements Graphics {
         this.frameBuffer = frameBuffer;
         this.canvas = new Canvas(frameBuffer);
         this.paint = new Paint();
+        
     }
 
     @Override
@@ -99,6 +101,17 @@ public class AndroidGraphics implements Graphics {
         canvas.drawRect(x, y, x + width - 1, y + height - 1, paint);
     }
 
+    public void drawArc(int x, int y, int radius, int start, int finish, int color){
+    	
+    	paint.setColor(color);
+    	paint.setStyle(Style.STROKE);
+    	paint.setStrokeWidth(5);
+    	
+    	RectF rectF = new RectF();
+    	rectF.set(x-radius, y-radius, x+radius, y+radius);
+    	canvas.drawArc(rectF, start, finish, true, paint);
+    }
+    
     @Override
     public void drawPixmap(Pixmap pixmap, int x, int y, int srcX, int srcY,
             int srcWidth, int srcHeight) {
@@ -121,6 +134,13 @@ public class AndroidGraphics implements Graphics {
         canvas.drawBitmap(((AndroidPixmap)pixmap).bitmap, x, y, null);
     }
 
+    public void drawText(String text, int x, int y, int color){
+    	paint.setColor(color);
+    	paint.setTextSize(40);
+    	
+    	canvas.drawText(text, x, y, paint);
+    }
+    
     @Override
     public int getWidth() {
         return frameBuffer.getWidth();
