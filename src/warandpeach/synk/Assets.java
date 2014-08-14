@@ -7,7 +7,14 @@ public class Assets {
 	
 	public static Pixmap mainMenu;
 	public static Pixmap background;
+	public static Pixmap highScore;
 	
 	public static Pixmap player;
+	public static Pixmap player2;
+	public static Pixmap player3;
+	public static Pixmap player4;
+	public static Pixmap player5;
+	public static Pixmap shadeDoge;
+	public static Pixmap zackFace;
 	
 }

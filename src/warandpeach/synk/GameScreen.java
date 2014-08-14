@@ -3,6 +3,7 @@ package warandpeach.synk;
 import java.util.List;
 
 import android.graphics.Color;
+import android.graphics.Path;
 import android.graphics.Point;
 import android.util.Log;
 
@@ -22,6 +23,7 @@ public class GameScreen extends Screen {
 	
 	GameState state = GameState.Running;
 	World world;
+	Pixmap[] playerPix = {Assets.player, Assets.player2, Assets.player3, Assets.player4, Assets.player5};
 	
 	public GameScreen(Game game){
 		super(game);
@@ -55,12 +57,21 @@ public class GameScreen extends Screen {
 					state = GameState.Paused;
 					return; 
 				}
-				if(event.y > 1100 ){
+				if(event.y < 1100){
 					if(event.x < 180){
 						world.player.moveLeft = false;
 					}
 					
 					if(event.x > 620){
+						world.player.moveRight = false;
+					}
+				}
+				if(event.y > 1100 ){
+					if(event.x < 399){
+						world.player.moveLeft = false;
+					}
+					
+					if(event.x > 401){
 						world.player.moveRight = false;
 					}
 				}
@@ -103,16 +114,26 @@ public class GameScreen extends Screen {
 	
 	private void updateGameOver(List<TouchEvent> touchEvents){
 		int len = touchEvents.size();
-		for(int i = 0; i < len; i++){
-			TouchEvent event = touchEvents.get(i);
-			if(event.type == TouchEvent.TOUCH_UP){
-				if(event.y > 0){
-					game.setScreen(new MainMenuScreen(game));
-					return;
+		int newHighScore = world.pointManager.totalPixels;
+		for(int i = 0; i < Settings.highScores.length; i++){
+			if(newHighScore > Settings.highScores[i]){
+				for(int j = Settings.highScores.length-1; j > i; j--){
+					Settings.highScores[j] = Settings.highScores[j-1];
 				}
+				Settings.highScores[i] = newHighScore;
+				break;
 			}
-			
 		}
+		Settings.save(game.getFileIO());
+		for(int i = 0; i < Settings.highScores.length; i++){
+			Log.d("SaveHighScore", Settings.highScores[i]+"");
+		}
+		Settings.load(game.getFileIO());
+		for(int i = 0; i < Settings.highScores.length; i++){
+			Log.d("LoadHighScore", Settings.highScores[i]+"");
+		}
+		game.setScreen(new HighScoreScreen(game));
+		return;
 	}
 	
 	public void present(float deltaTime){
@@ -139,29 +160,67 @@ public class GameScreen extends Screen {
 		int radiusLeft = calcRadius(player.x, -400);
 		int radiusRight = calcRadius(-player.x, 400);
 		
-		g.drawArc(0, 1275, radiusLeft, 270, 90, Color.WHITE);
-		g.drawArc(795, 1275, radiusRight, 180, 90, Color.WHITE);
-		
 		PointManager pointManager = world.pointManager;
-		for(int i = 0; i < pointManager.points.size(); i++){
+		Path path = new Path();
+		path.moveTo(pointManager.points.get(0).x, pointManager.points.get(0).y);
+		int cometX = 0;
+		int minY = 0;
+		for(int i = 1; i < pointManager.points.size(); i++){
 			Point currPoint = pointManager.points.get(i);
-			if(currPoint.y > player.y-25 && currPoint.y < player.y+Assets.player.getHeight()-25){
-				if(player.health > 700)
-					g.drawPixel(currPoint.x, currPoint.y, Color.GREEN);
-				else if(player.health > 300)
-					g.drawPixel(currPoint.x, currPoint.y, Color.YELLOW);
-				else if(player.health > 0)
-					g.drawPixel(currPoint.x, currPoint.y, Color.RED);
+			if(Math.abs(currPoint.y) < 50 ){
+				cometX = currPoint.x;
 			}
-			else
-				g.drawPixel(currPoint.x, currPoint.y, Color.CYAN);
+			path.lineTo(currPoint.x, currPoint.y);
+			
+			//pointManager.points.get(i-1).x,pointManager.points.get(i-1).y, 
+//			if(currPoint.y > player.y-25 && currPoint.y < player.y+Assets.player.getHeight()-25){
+//				if(player.health > 700)
+//					g.drawPixel(currPoint.x, currPoint.y, Color.GREEN);
+//				else if(player.health > 300)
+//					g.drawPixel(currPoint.x, currPoint.y, Color.YELLOW);
+//				else if(player.health > 0)
+//					g.drawPixel(currPoint.x, currPoint.y, Color.RED);
+//			}
+//			else
+//				g.drawPixel(currPoint.x, currPoint.y, Color.CYAN);
+
 		}
 		
-		Pixmap playerPixmap = Assets.player;
+		Pixmap playerPixmap = playerPix[player.spriteIndex];
+		int cometSize = player.health/8+25;
+		if(player.health > 700){
+			//playerPixmap  = Assets.player;
+			g.drawPath(path, Color.GREEN, 22);
+			//g.drawPath(path, Color.BLUE, 10);
+			g.drawArc(cometX, 0, cometSize, 0, 360, Color.GREEN);
+		}
+		else if(player.health > 300){
+			//playerPixmap  = Assets.zackFace;
+			g.drawPath(path, Color.YELLOW, 22);
+			//g.drawPath(path, Color.BLUE, 10);
+			g.drawArc(cometX, 0, cometSize, 0, 360, Color.YELLOW);
+		}
+		else{
+			g.drawPath(path, Color.RED, 22);
+			//g.drawPath(path, Color.BLUE, 10);
+			//playerPixmap = Assets.shadeDoge;
+			g.drawArc(cometX, 0, cometSize, 0, 360, Color.RED);
+		}
+					
 		int x = player.x;
 		int y = player.y;
-		g.drawPixmap(playerPixmap, x, y);
-		
+		g.drawPixmap(playerPixmap, x, y);		
+
+		g.drawArc(0, 1280, radiusLeft, 270, 90, Color.WHITE);
+		g.drawArc(795, 1280, radiusRight, 180, 90, Color.WHITE);
+		/*for(int i = 3; i < 20; i++ ){
+			if(i % 2 == 0){
+				g.drawArc(cometX, 40, (cometSize*2)/i, 0, 360, Color.RED);
+			}			
+			if(i % 2 == 1){
+				g.drawArc(cometX, 40, (cometSize*2)/i, 0, 360, Color.YELLOW);
+			}
+		}*/
 		g.drawText("Level: " + (pointManager.speedIndex+1), 325, 1200, Color.WHITE);
 		g.drawText("Health: " + player.health, 325, 1250, Color.WHITE);
 		g.drawText("Score: " + pointManager.totalPixels, 325, 50, Color.WHITE);

@@ -1,5 +1,7 @@
 package com.badlogic.androidgames.framework;
 
+import android.graphics.Path;
+
 public interface Graphics {
     public static enum PixmapFormat {
         ARGB8888, ARGB4444, RGB565
@@ -16,6 +18,8 @@ public interface Graphics {
     public void drawRect(int x, int y, int width, int height, int color);
 
     public void drawArc(int x, int y, int radius, int start, int finish, int color);
+    
+    public void drawPath(Path p, int color, int width);
     
     public void drawPixmap(Pixmap pixmap, int x, int y, int srcX, int srcY,
             int srcWidth, int srcHeight);

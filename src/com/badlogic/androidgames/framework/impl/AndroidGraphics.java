@@ -9,8 +9,10 @@ import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.graphics.Canvas;
+import android.graphics.CornerPathEffect;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 
@@ -104,12 +106,21 @@ public class AndroidGraphics implements Graphics {
     public void drawArc(int x, int y, int radius, int start, int finish, int color){
     	
     	paint.setColor(color);
-    	paint.setStyle(Style.STROKE);
+    	paint.setStyle(Style.FILL);
     	paint.setStrokeWidth(5);
     	
     	RectF rectF = new RectF();
     	rectF.set(x-radius, y-radius, x+radius, y+radius);
     	canvas.drawArc(rectF, start, finish, true, paint);
+    }
+    
+    public void drawPath(Path path, int color, int width){
+    	
+    	paint.setColor(color);
+    	paint.setStyle(Style.STROKE);
+    	paint.setStrokeWidth(width);
+    	paint.setPathEffect(new CornerPathEffect(5));
+    	canvas.drawPath(path, paint);
     }
     
     @Override
@@ -136,6 +147,7 @@ public class AndroidGraphics implements Graphics {
 
     public void drawText(String text, int x, int y, int color){
     	paint.setColor(color);
+    	paint.setStrokeWidth(5);
     	paint.setTextSize(40);
     	
     	canvas.drawText(text, x, y, paint);
