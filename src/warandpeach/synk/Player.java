@@ -14,6 +14,7 @@ public class Player {
 	public int health;
 	public int spriteIndex;
 	public float timePassed;
+	public boolean reversed;
 	
 	public Player(){
 		halfwayPoint = 400-Assets.player.getWidth()/2;		
@@ -24,25 +25,51 @@ public class Player {
 		health = 1000;
 		spriteIndex = 0;
 		timePassed=0;
+		reversed = false;
 	}
 	
 	private void move(){
-		if(!moveLeft && !moveRight){
-			if(x > halfwayPoint){
-				x-=10;
+		if(reversed){
+			if(!moveLeft && !moveRight){
+				if(x > halfwayPoint){
+					if(x < 800-Assets.player.getWidth()-2)
+						x+=7;
+				}
+				if(x < halfwayPoint){
+					if(x > 2)
+						x -=7;
+				}
 			}
-			if(x < halfwayPoint){
-				x +=10;
+			if(moveLeft && moveRight){
+
+			}
+			else if(moveLeft && x < 800-Assets.player.getWidth()-2){
+				if(x < 800-Assets.player.getWidth()-2)
+					x += 15;
+			}
+			else if(moveRight && x > 2 ){
+				if(x > 2)
+					x -= 15;
 			}
 		}
-		if(moveLeft && moveRight){
-			
+		else{
+			if(!moveLeft && !moveRight){
+				if(x > halfwayPoint){
+					x-=7;
+				}
+				if(x < halfwayPoint){
+					x +=7;
+				}
+			}
+			if(moveLeft && moveRight){
+
+			}
+			else if(moveLeft && x > 2)
+				x -= 15;
+			else if(moveRight && x < 800-Assets.player.getWidth()-2)
+				x += 15;
 		}
-		else if(moveLeft && x > 2)
-			x -= 20;
-		else if(moveRight && x < 800-Assets.player.getWidth()-2)
-			x += 20;
-		
+
 	}
 	
 	public void update(float deltaTime){

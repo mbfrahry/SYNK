@@ -2,7 +2,9 @@ package warandpeach.synk;
 
 import java.util.List;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.view.View;
 
 import com.badlogic.androidgames.framework.Game;
 import com.badlogic.androidgames.framework.Graphics;
@@ -23,7 +25,7 @@ public class MainMenuScreen extends Screen{
 		for(int i = 0; i <len; i++){
 			TouchEvent event = touchEvents.get(i);
 			if(event.type == TouchEvent.TOUCH_UP){
-				if(inBounds(event, 150, 1025, 410, 150)){
+				if(inBounds(event, 150, 950, 420, 170)){
 					game.setScreen(new GameScreen(game));;
 				}
 			}
@@ -42,6 +44,7 @@ public class MainMenuScreen extends Screen{
 		
 		g.drawPixmap(Assets.mainMenu, 0 ,0);
 		g.drawRect(152, 933, 430, 150, Color.WHITE);
+		
 	}
 
 	public void pause() {

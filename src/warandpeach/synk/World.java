@@ -7,12 +7,15 @@ public class World {
 
 	public Player player;
 	public PointManager pointManager;
+	public ItemManager itemManager;
 	public boolean gameOver = false;
-	
+	public int coins;
 	
 	public World(){
 		player = new Player();
 		pointManager = new PointManager();
+		itemManager = new ItemManager();
+		coins = 0;
 	}
 	
 	private void updatePlayerHealth(){
@@ -40,12 +43,34 @@ public class World {
 		}
 	}
 	
+	public void checkItemCollision(){
+		for(int i = 0 ; i < itemManager.items.size(); i++){
+			Item item = itemManager.items.get(i);
+			if(item.y+Assets.coin.getHeight() > player.y && item.y < player.y+Assets.player.getHeight()){
+				if(item.x < player.x+Assets.player.getWidth() && item.x+Assets.coin.getWidth() > player.x){
+					item.y = 1281;
+					if(item.itemID == 0){
+						coins++;
+					}
+					if(item.itemID == 1){
+						player.health += 100;
+					}
+					if(item.itemID == 2){
+						player.reversed = !player.reversed;
+					}
+				}
+			}
+		}
+	}
+	
 	public void update(float deltaTime){
 		if(gameOver)
 			return;
 	
 		player.update(deltaTime);
 		pointManager.update(deltaTime);
+		itemManager.update(deltaTime);
 		updatePlayerHealth();
+		checkItemCollision();
 	}
 }

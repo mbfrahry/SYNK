@@ -17,4 +17,7 @@ public class Assets {
 	public static Pixmap shadeDoge;
 	public static Pixmap zackFace;
 	
+	public static Pixmap healthPU;
+	public static Pixmap reversePU;
+	public static Pixmap coin;
 }

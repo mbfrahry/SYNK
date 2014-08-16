@@ -13,9 +13,10 @@ public class LoadingScreen extends Screen{
 	}
 
 	public void update(float deltaTime){
+
+		Log.d("Before", "BeforeLoad");
 		Graphics g = game.getGraphics();
 		game.getGraphics();
-		
 		Assets.mainMenu = g.newPixmap("SYNKTitle.png", PixmapFormat.ARGB4444);
 		Assets.background = g.newPixmap("SYNKBackground.png", PixmapFormat.ARGB4444);
 		Assets.highScore = g.newPixmap("HighScore.png", PixmapFormat.ARGB4444);
@@ -29,10 +30,13 @@ public class LoadingScreen extends Screen{
 		Assets.shadeDoge = g.newPixmap("smallDogeShades.jpg", PixmapFormat.ARGB4444);
 		Assets.zackFace = g.newPixmap("zackFace.jpg", PixmapFormat.ARGB4444);
 		
+		Assets.healthPU = g.newPixmap("Health.png", PixmapFormat.ARGB4444);
+		Assets.reversePU = g.newPixmap("reverse.png", PixmapFormat.ARGB4444);
+		Assets.coin = g.newPixmap("coin.png", PixmapFormat.ARGB4444);
+		
+		Log.d("Before", "BeforeLoad");
 		Settings.load(game.getFileIO());
-		for(int i = 0; i < Settings.highScores.length; i++){
-			Log.d("LoadHighScore", Settings.highScores[i]+"");
-		}
+		Log.d("After", "AfterLoad");
 		game.setScreen(new MainMenuScreen(game));;
 	}
 	

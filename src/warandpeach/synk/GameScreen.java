@@ -65,15 +65,20 @@ public class GameScreen extends Screen {
 					if(event.x > 620){
 						world.player.moveRight = false;
 					}
+					
 				}
 				if(event.y > 1100 ){
-					if(event.x < 399){
+					if(event.x < 399 || ((event.x > 180 && event.x <620) && world.player.moveLeft && !world.player.moveRight)){
 						world.player.moveLeft = false;
 					}
 					
-					if(event.x > 401){
+					if(event.x > 401 || ((event.x < 620 && event.x > 180) && world.player.moveRight && !world.player.moveLeft)){
 						world.player.moveRight = false;
 					}
+					//if(event.x > 180 && world.player.moveLeft)
+					//	world.player.moveLeft = false;
+					//if(event.x < 620 && world.player.moveRight)
+					//	world.player.moveRight = false;
 				}
 				
 			}
@@ -124,14 +129,9 @@ public class GameScreen extends Screen {
 				break;
 			}
 		}
+		Settings.coins += world.coins;
+		Log.d("coins", Settings.coins+"");
 		Settings.save(game.getFileIO());
-		for(int i = 0; i < Settings.highScores.length; i++){
-			Log.d("SaveHighScore", Settings.highScores[i]+"");
-		}
-		Settings.load(game.getFileIO());
-		for(int i = 0; i < Settings.highScores.length; i++){
-			Log.d("LoadHighScore", Settings.highScores[i]+"");
-		}
 		game.setScreen(new HighScoreScreen(game));
 		return;
 	}
@@ -209,8 +209,23 @@ public class GameScreen extends Screen {
 					
 		int x = player.x;
 		int y = player.y;
+		
 		g.drawPixmap(playerPixmap, x, y);		
 
+		ItemManager itemManager = world.itemManager;
+		for(int i = 0; i < itemManager.items.size(); i++){
+			Item item = itemManager.items.get(i);
+			if(item.itemID == 0){
+				g.drawPixmap(Assets.coin, item.x, item.y);
+			}
+			if(item.itemID == 1){
+				g.drawPixmap(Assets.healthPU, item.x, item.y);
+			}
+			if(item.itemID == 2){
+				g.drawPixmap(Assets.reversePU, item.x, item.y);
+			}
+		}
+		
 		g.drawArc(0, 1280, radiusLeft, 270, 90, Color.WHITE);
 		g.drawArc(795, 1280, radiusRight, 180, 90, Color.WHITE);
 		/*for(int i = 3; i < 20; i++ ){
@@ -257,9 +272,9 @@ public class GameScreen extends Screen {
 	public void pause(){
 		if(state == GameState.Running)
 			state = GameState.Paused;
-		if(world.gameOver){
-			Settings.save(game.getFileIO());
-		}
+		Settings.save(game.getFileIO());
+		Settings.load(game.getFileIO());
+		
 	}
 	
 	public void resume(){

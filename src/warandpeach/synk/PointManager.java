@@ -38,7 +38,7 @@ public class PointManager {
 			points.add(currPoint);
 		}
 		rand = new Random();
-		speed = 20;
+		speed = 10;
 		passedPoints = 0;
 		speedIndex = 0;
 		totalPixels = 0;
@@ -137,7 +137,7 @@ public class PointManager {
 		if(speedIndex < speeds.length){
 			if(passedPoints >= speeds[speedIndex]){
 				passedPoints = 0;
-				speed +=8;
+				speed +=4;
 				speedIndex++;
 			}
 		}
