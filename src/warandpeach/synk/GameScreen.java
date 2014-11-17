@@ -224,6 +224,12 @@ public class GameScreen extends Screen {
 			if(item.itemID == 2){
 				g.drawPixmap(Assets.reversePU, item.x, item.y);
 			}
+			if(item.itemID == 3){
+				g.drawPixmap(Assets.plusPU, item.x, item.y);
+			}
+			if(item.itemID == 4){
+				g.drawPixmap(Assets.minusPU, item.x, item.y);
+			}
 		}
 		
 		g.drawArc(0, 1280, radiusLeft, 270, 90, Color.WHITE);

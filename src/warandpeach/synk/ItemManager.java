@@ -18,7 +18,7 @@ public class ItemManager {
 	}
 	
 	public void resetItem(Item item){
-		int newId = rand.nextInt()%3;
+		int newId = rand.nextInt()%5;
 		int newX = rand.nextInt(720);
 		int newY = -rand.nextInt(3000);
 		item.itemID = newId;

@@ -20,6 +20,7 @@ public class LoadingScreen extends Screen{
 		Assets.mainMenu = g.newPixmap("SYNKTitle.png", PixmapFormat.ARGB4444);
 		Assets.background = g.newPixmap("SYNKBackground.png", PixmapFormat.ARGB4444);
 		Assets.highScore = g.newPixmap("HighScore.png", PixmapFormat.ARGB4444);
+		Assets.WAPlogo = g.newPixmap("WarAndPeachLogo.png", PixmapFormat.ARGB4444);
 		
 		Assets.player = g.newPixmap("Player1.png", PixmapFormat.ARGB4444);
 		Assets.player2 = g.newPixmap("Player2.png", PixmapFormat.ARGB4444);
@@ -33,10 +34,11 @@ public class LoadingScreen extends Screen{
 		Assets.healthPU = g.newPixmap("Health.png", PixmapFormat.ARGB4444);
 		Assets.reversePU = g.newPixmap("reverse.png", PixmapFormat.ARGB4444);
 		Assets.coin = g.newPixmap("coin.png", PixmapFormat.ARGB4444);
-		
-		Log.d("Before", "BeforeLoad");
+		Assets.plusPU = g.newPixmap("plus.png",  PixmapFormat.ARGB4444);
+		Assets.minusPU = g.newPixmap("minus.png", PixmapFormat.ARGB4444);		
+
 		Settings.load(game.getFileIO());
-		Log.d("After", "AfterLoad");
+
 		game.setScreen(new MainMenuScreen(game));;
 	}
 	

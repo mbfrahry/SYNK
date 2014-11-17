@@ -8,6 +8,7 @@ public class Assets {
 	public static Pixmap mainMenu;
 	public static Pixmap background;
 	public static Pixmap highScore;
+	public static Pixmap WAPlogo;
 	
 	public static Pixmap player;
 	public static Pixmap player2;
@@ -20,4 +21,6 @@ public class Assets {
 	public static Pixmap healthPU;
 	public static Pixmap reversePU;
 	public static Pixmap coin;
+	public static Pixmap plusPU;
+	public static Pixmap minusPU;
 }

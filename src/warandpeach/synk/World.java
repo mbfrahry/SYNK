@@ -58,6 +58,12 @@ public class World {
 					if(item.itemID == 2){
 						player.reversed = !player.reversed;
 					}
+					if(item.itemID == 3){
+						pointManager.speed*=2;
+					}
+					if(item.itemID == 4){
+						pointManager.speed/=2;
+					}
 				}
 			}
 		}

@@ -25,6 +25,8 @@ public class PointManager {
 	int halfPlayerWidth;
 	int moved;
 	int randAmp;
+	int speedUp;
+	int speedDown;
 	
 	public PointManager(){
 		maxPoints = 1401/3;
@@ -47,6 +49,8 @@ public class PointManager {
 		halfPlayerWidth = Assets.player.getWidth()/2;
 		moved = 0;
 		randAmp = 200;
+		speedUp = 0;
+		speedDown =0;
 	}
 	
 	private void movePoints(){
@@ -141,6 +145,7 @@ public class PointManager {
 				speedIndex++;
 			}
 		}
+		
 	}
 	
 	public void update(double deltaTime){
