@@ -26,7 +26,7 @@ public class SmartAIBot extends AsyncTask<String[], String[], String[]>{
 
 			int objectX;
 			
-			Item healthItem = itemManager.findItem(4);
+			Item healthItem = itemManager.findItem(1);
 			if(healthItem != null){
 				objectX = healthItem.x;
 			}
