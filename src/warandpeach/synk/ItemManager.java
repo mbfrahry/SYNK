@@ -26,6 +26,18 @@ public class ItemManager {
 		item.y = newY;
 	}
 	
+	public Item findItem(int itemNum){
+		Item item;
+		for(int i = 0; i < items.size(); i++){
+			item = items.get(i);
+			if(item.itemID == itemNum && item.y > 0){
+				return item;
+			}
+		}
+		
+		return null;
+	}
+	
 	public void update(float deltaTime){
 		
 		for(int i = 0; i < items.size(); i++){

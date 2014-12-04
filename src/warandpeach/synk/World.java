@@ -11,11 +11,19 @@ public class World {
 	public boolean gameOver = false;
 	public int coins;
 	
-	public World(){
+	public World(int AINum){
 		player = new Player();
 		pointManager = new PointManager();
 		itemManager = new ItemManager();
 		coins = 0;
+		if(AINum == 1){
+		  AIBot ai = new AIBot(pointManager, player);
+		  ai.execute();
+		}
+		if(AINum == 2){
+			SmartAIBot ai = new SmartAIBot(pointManager, player, itemManager);
+			ai.execute();
+		}
 	}
 	
 	private void updatePlayerHealth(){
@@ -62,7 +70,9 @@ public class World {
 						pointManager.speed*=2;
 					}
 					if(item.itemID == 4){
-						pointManager.speed/=2;
+						if(pointManager.speed > 10 ){
+							pointManager.speed/=2;
+						}
 					}
 				}
 			}

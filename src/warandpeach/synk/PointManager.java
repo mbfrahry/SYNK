@@ -137,6 +137,16 @@ public class PointManager {
 		
 	}
 	
+	public Point getPoint(int y){
+	  	for(int i = 0; i < points.size(); i++){
+	  		Point currPoint = points.get(i);
+	  		if(y > currPoint.y ){
+	  			return currPoint;
+	  		}
+	  	}
+	  	return null;
+	}
+	
 	private void updateSpeed(){
 		if(speedIndex < speeds.length){
 			if(passedPoints >= speeds[speedIndex]){
