@@ -19,9 +19,7 @@ public class SmartAIBot extends AsyncTask<String[], String[], String[]>{
 	protected String[] doInBackground(String[]... params) {
 
 		boolean run = true;
-		
-		double start = 0;
-		
+	
 		while(run){
 
 			int objectX;
@@ -29,29 +27,14 @@ public class SmartAIBot extends AsyncTask<String[], String[], String[]>{
 			Item healthItem = itemManager.findItem(1);
 			if(healthItem != null){
 				objectX = healthItem.x;
+				moveToItem(player, healthItem);
 			}
 			else{
 				Point point = pointManager.getPoint(player.y);
 				objectX = point.x;
+				movePlayerViaPoint(objectX);
 			}
 			
-			movePlayerViaPoint(objectX);
-					
-					
-			/*
-			if(start/50 <= 1 ){
-				player.moveRight = false;
-				player.moveLeft = true;
-				start++;
-			}
-			else{
-				player.moveRight = true;
-				player.moveLeft = false;
-				start++;
-				if(start > 100){
-					start = 0;
-				}
-			}*/
 		}
 		
 		return null;
@@ -79,5 +62,44 @@ public class SmartAIBot extends AsyncTask<String[], String[], String[]>{
 				player.moveRight = true;
 			}
 		}
+	}
+	
+	public void moveToItem(Player player, Item item){
+		player.moveLeft = false;
+		player.moveRight = false;
+		
+		//double distance = Math.sqrt(Math.pow((player.x - item.x),2) + Math.pow((player.y - item.y),2));
+		//distance is the tangent of the triangle also!
+		int changeY = findMinDistance(player.x, item.y);
+		if(player.y-changeY < item.y){
+		
+			if(player.x >= item.x){
+				if(player.reversed){
+					player.moveLeft = false;
+					player.moveRight = true;
+				}
+				else{
+					player.moveLeft = true;
+					player.moveRight = false;
+				}
+			}
+			else{
+				if(player.reversed){
+					player.moveLeft = true;
+					player.moveRight = false;
+				}
+				else{
+	
+					player.moveLeft = false;
+					player.moveRight = true;
+				}
+			}
+		}
+	}
+	
+	public int findMinDistance(int playerX, int itemX){
+		int diffX = playerX - itemX;
+		diffX /= 15;
+		return Math.abs(diffX * 10);
 	}
 }
